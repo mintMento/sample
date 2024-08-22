@@ -23,233 +23,133 @@ export default function Home() {
   return (
     <>
       <main className={styles.main}>
-        <h1 id={styles.pageTitle}>
-          Deep Chat test ground for{' '}
-          <a href="https://github.com/OvidijusParsiunas/deep-chat/tree/main/example-servers/nextjs">NextJs</a>
-        </h1>
-        <h1>Server for a custom API</h1>
         <div className={styles.components}>
-          <div className={styles.diagonalLine} style={{background: '#e8f5ff'}}></div>
-          {/* by setting maxMessages requestBodyLimits to 0 or lower - each request will send full chat history:
-            https://deepchat.dev/docs/connect/#requestBodyLimits */}
-          {/* If you don't want to or can't edit the target service, you can process the outgoing message using
-            responseInterceptor and the incoming message using responseInterceptor:
-            https://deepchat.dev/docs/interceptors */}
           <DeepChat
-            style={{borderRadius: '10px'}}
-            introMessage={{text: 'Send a chat message to an example server.'}}
-            connect={{url: '/api/custom/chat'}}
-            requestBodyLimits={{maxMessages: -1}}
-            requestInterceptor={(details: RequestDetails) => {
-              console.log(details);
-              return details;
-            }}
-            responseInterceptor={(response: any) => {
-              console.log(response);
-              return response;
-            }}
-          />
-          <DeepChat
-            style={{borderRadius: '10px'}}
-            introMessage={{text: 'Send a streamed chat message to an example server.'}}
-            connect={{url: '/api/custom/chat-stream', stream: true}}
-          />
-          <DeepChat
-            style={{borderRadius: '10px'}}
-            introMessage={{text: 'Send files to an example server.'}}
-            connect={{url: '/api/custom/files'}}
-            audio={true}
-            images={true}
-            gifs={true}
-            camera={true}
-            microphone={true}
-            mixedFiles={true}
-            textInput={{placeholder: {text: 'Send a file!'}}}
-            validateInput={(_?: string, files?: File[]) => {
-              return !!files && files.length > 0;
-            }}
-          />
-        </div>
-        <h1 className={styles.serverTitle}>Server for OpenAI</h1>
-        <a href="https://openai.com/blog/openai-api" target="_blank" rel="noreferrer">
-          <img
-            className={styles.serverTitleIcon}
-            src="https://raw.githubusercontent.com/OvidijusParsiunas/deep-chat/HEAD/website/static/img/openAILogo.png"
-            style={{width: 26, marginBottom: '-1px'}}
-            alt={'Title icon'}
-          />
-        </a>
-        <h3>Make sure to set the OPENAI_API_KEY environment variable in your server</h3>
-        <div className={styles.components}>
-          <div className={styles.diagonalLine} style={{background: '#f2f2f2'}}></div>
-          {/* additionalBodyProps is used to set other properties that will be sent to the server along with the message:
-            https://deepchat.dev/docs/connect#connect */}
-          {/* by setting maxMessages requestBodyLimits to 0 or lower - each request will send full chat history:
-            https://deepchat.dev/docs/connect/#requestBodyLimits */}
-          <DeepChat
-            style={{borderRadius: '10px'}}
-            introMessage={{text: 'Send a chat message through an example server to OpenAI.'}}
-            connect={{url: '/api/openai/chat', additionalBodyProps: {model: 'gpt-4o'}}}
-            requestBodyLimits={{maxMessages: -1}}
-            errorMessages={{displayServiceErrorMessages: true}}
-          />
-          <DeepChat
-            style={{borderRadius: '10px'}}
-            introMessage={{text: 'Send a streamed chat message through an example server to OpenAI.'}}
-            connect={{url: '/api/openai/chat-stream', stream: true, additionalBodyProps: {model: 'gpt-4o'}}}
-            requestBodyLimits={{maxMessages: -1}}
-            errorMessages={{displayServiceErrorMessages: true}}
-          />
-          {/* If not using the camera, you can use an example image here:
-            https://github.com/OvidijusParsiunas/deep-chat/blob/main/example-servers/ui/assets/example-image.png */}
-          <DeepChat
-            style={{borderRadius: '10px'}}
-            introMessage={{
-              text: 'Send a 1024x1024 .png image through an example server to OpenAI, which will generate its variation.',
-            }}
-            connect={{url: '/api/openai/image'}}
-            camera={{files: {maxNumberOfFiles: 1, acceptedFormats: '.png'}}}
-            images={{files: {maxNumberOfFiles: 1, acceptedFormats: '.png'}}}
-            textInput={{disabled: true, placeholder: {text: 'Send an image!'}}}
-            errorMessages={{displayServiceErrorMessages: true}}
-          />
-        </div>
-
-        <h1 className={styles.serverTitle}>Server for Hugging Face</h1>
-        <a href="https://huggingface.co/docs/api-inference/index" target="_blank" rel="noreferrer">
-          <img
-            className={styles.serverTitleIcon}
-            src="https://raw.githubusercontent.com/OvidijusParsiunas/deep-chat/HEAD/website/static/img/huggingFaceLogo.png"
-            style={{width: 36, marginBottom: '-6px', marginLeft: '7px'}}
-            alt={'Title icon'}
-          />
-        </a>
-        <h3>Make sure to set the HUGGING_FACE_API_KEY environment variable in your server</h3>
-        <div className={styles.components}>
-          <div className={styles.diagonalLine} style={{background: '#fffdd9'}}></div>
-          {/* by setting maxMessages requestBodyLimits to 0 or lower - each request will send full chat history:
-            https://deepchat.dev/docs/connect/#requestBodyLimits */}
-          <DeepChat
-            style={{borderRadius: '10px'}}
-            introMessage={{text: 'Send a conversation message through an example server to Hugging Face.'}}
-            requestBodyLimits={{maxMessages: -1}}
-            connect={{url: '/api/huggingface/conversation'}}
-            errorMessages={{displayServiceErrorMessages: true}}
-          />
-          {/* If not using the camera, you can use an example image here:
-            https://github.com/OvidijusParsiunas/deep-chat/blob/main/example-servers/ui/assets/example-image.png */}
-          <DeepChat
-            style={{borderRadius: '10px'}}
-            introMessage={{
-              text: 'Send an image through an example server to Hugging Face and retrieve its classification.',
-            }}
-            connect={{url: '/api/huggingface/image'}}
-            camera={{files: {maxNumberOfFiles: 1, acceptedFormats: '.png'}}}
-            images={{files: {maxNumberOfFiles: 1, acceptedFormats: '.png'}}}
-            textInput={{disabled: true, placeholder: {text: 'Send an image!'}}}
-            errorMessages={{displayServiceErrorMessages: true}}
-          />
-          {/* If not using the microphone, you can send an example audio file here:
-            https://github.com/OvidijusParsiunas/deep-chat/blob/main/example-servers/ui/assets/example-audio.m4a */}
-          <DeepChat
-            style={{borderRadius: '10px'}}
-            introMessage={{
-              text: 'Send an audio file through an example server to Hugging Face and recieve its transcript.',
-            }}
-            connect={{url: '/api/huggingface/speech'}}
-            audio={{files: {maxNumberOfFiles: 1}}}
-            microphone={{files: {maxNumberOfFiles: 1}}}
-            textInput={{disabled: true, placeholder: {text: 'Send an audio file!'}}}
-            errorMessages={{displayServiceErrorMessages: true}}
-          />
-        </div>
-
-        <h1 className={styles.serverTitle}>Server for Stability AI</h1>
-        <a href="https://platform.stability.ai/" target="_blank" rel="noreferrer">
-          <img
-            className="server-title-icon"
-            src="https://raw.githubusercontent.com/OvidijusParsiunas/deep-chat/HEAD/website/static/img/stabilityAILogo.png"
-            style={{width: 34, marginBottom: '-6px', marginLeft: '10px'}}
-            alt={'Title icon'}
-          />
-        </a>
-        <h3>Make sure to set the STABILITY_API_KEY environment variable in your server</h3>
-        <div className={styles.components}>
-          <div className={styles.diagonalLine} style={{background: '#f7efff'}}></div>
-          <DeepChat
-            style={{borderRadius: '10px'}}
-            introMessage={{text: 'Send a prompt through an example server to Stability AI to generate an image.'}}
-            connect={{url: '/api/stabilityai/text-to-image'}}
-            textInput={{placeholder: {text: 'Describe an image'}}}
-            errorMessages={{displayServiceErrorMessages: true}}
-          />
-          {/* If not using the camera, you can use an example image here:
-              https://github.com/OvidijusParsiunas/deep-chat/blob/main/example-servers/ui/assets/example-image.png */}
-          <DeepChat
-            style={{borderRadius: '10px'}}
-            introMessage={{
-              text: 'Send an image along with a description through an example server to Stability AI in order to generate a new one with the described changes.',
-            }}
-            connect={{url: '/api/stabilityai/image-to-image'}}
-            camera={{files: {maxNumberOfFiles: 1, acceptedFormats: '.png'}}}
-            images={{files: {maxNumberOfFiles: 1, acceptedFormats: '.png'}}}
-            textInput={{placeholder: {text: 'Describe the desired changes'}}}
-            errorMessages={{displayServiceErrorMessages: true}}
-            validateInput={(text?: string, files?: File[]) => {
-              return !!text && text?.trim() !== '' && !!files && files.length > 0;
-            }}
-          />
-          {/* If not using the camera, you can use an example image here:
-              https://github.com/OvidijusParsiunas/deep-chat/blob/main/example-servers/ui/assets/example-image.png */}
-          <DeepChat
-            style={{borderRadius: '10px'}}
-            introMessage={{
-              text: 'Send an image through an example server to Stability AI in order to generate a new one with a higher resolution.',
-            }}
-            connect={{url: '/api/stabilityai/image-upscale'}}
-            camera={{files: {maxNumberOfFiles: 1, acceptedFormats: '.png'}}}
-            images={{files: {maxNumberOfFiles: 1, acceptedFormats: '.png'}}}
-            textInput={{disabled: true, placeholder: {text: 'Send an image'}}}
-            errorMessages={{displayServiceErrorMessages: true}}
-          />
-        </div>
-
-        <h1 className={styles.serverTitle}>Server for Cohere</h1>
-        <a href="https://docs.cohere.com/docs" target="_blank" rel="noreferrer">
-          <img
-            className={styles.serverTitleIcon}
-            src="https://raw.githubusercontent.com/OvidijusParsiunas/deep-chat/HEAD/website/static/img/cohereLogo.png"
-            style={{width: 37, marginBottom: '-8px', marginLeft: '4px'}}
-            alt={'Title icon'}
-          />
-        </a>
-        <h3>Make sure to set the COHERE_API_KEY environment variable in your server</h3>
-        <div className={styles.components}>
-          <div className={styles.diagonalLine} style={{background: '#fff2f7'}}></div>
-          <DeepChat
-            style={{borderRadius: '10px'}}
-            introMessage={{
-              text: 'Send a chat message through an example server to Cohere. You may need to apply for Coral access before using this.',
-            }}
-            connect={{url: '/api/cohere/chat'}}
-            requestBodyLimits={{maxMessages: -1}}
-            errorMessages={{displayServiceErrorMessages: true}}
-          />
-          <DeepChat
-            style={{borderRadius: '10px'}}
-            introMessage={{
-              text: 'Send start text through an example server to Cohere and receive its genereated completion. E.g. "Please explain to me how LLMs work"',
-            }}
-            connect={{url: '/api/cohere/generate'}}
-            textInput={{placeholder: {text: 'Once upon a time...'}}}
-            errorMessages={{displayServiceErrorMessages: true}}
-          />
-          <DeepChat
-            style={{borderRadius: '10px'}}
-            introMessage={{text: 'Send text through an example server to Cohere and receive its summary.'}}
-            connect={{url: '/api/cohere/summarize'}}
-            textInput={{placeholder: {text: 'Insert text to summarize'}}}
-            errorMessages={{displayServiceErrorMessages: true}}
+              id="chat-element"
+              style={{
+                borderRadius: '10px',
+                borderColor: '#e4e4e4',
+                background:
+                    'linear-gradient(90deg, rgb(239, 242, 247) 0%, 7.60286%, rgb(237, 240, 249) 15.2057%, 20.7513%, rgb(235, 239, 248) 26.297%, 27.6386%, rgb(235, 239, 248) 28.9803%, 38.2826%, rgb(231, 237, 249) 47.585%, 48.1216%, rgb(230, 236, 250) 48.6583%, 53.1306%, rgb(228, 236, 249) 57.6029%, 61.5385%, rgb(227, 234, 250) 65.4741%, 68.7835%, rgb(222, 234, 250) 72.093%, 75.7603%, rgb(219, 230, 248) 79.4275%, 82.8265%, rgb(216, 229, 248) 86.2254%, 87.8354%, rgb(213, 228, 249) 89.4454%, 91.8605%, rgb(210, 226, 249) 94.2755%, 95.4383%, rgb(209, 225, 248) 96.6011%, 98.3005%, rgb(208, 224, 247) 100%)',
+                position: 'fixed',
+                bottom: '20px',
+                right: '20px',
+                width: '400px',
+                height: '500px',
+                boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+                padding: '10px',
+                zIndex: 999,
+              }}
+              textInput={{
+                styles: {
+                  container: {
+                    borderRadius: '20px', border: 'unset', width: '78%', marginLeft: '8px',
+                    boxShadow: '0px 0.3px 0.9px rgba(0, 0, 0, 0.12), 0px 1.6px 3.6px rgba(0, 0, 0, 0.16)'
+                  },
+                  text: {padding: '10px', paddingLeft: '15px', paddingRight: '34px'}
+                },
+                placeholder: {text: 'Ask me anything...', style: {color: '#606060'}}
+              }}
+              images={true}
+              camera={{button: {position: 'dropup-menu'}}}
+              directConnection={{
+                openAI: {
+                  key: "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",
+                  chat: {max_tokens: 2000, system_prompt: 'Assist me with anything you can'}
+                }
+              }}
+              speechToText={{
+                azure: {
+                  subscriptionKey: "57cc542a7aa24da29f67f90a02c1339a",
+                  region: "australiaeast"
+                },
+                button: {
+                  default: {
+                    container: {
+                      default: {
+                        bottom: "1em",
+                        right: "0.6em",
+                        borderRadius: "20px",
+                        width: "1.9em",
+                        height: "1.9em"
+                      }
+                    },
+                    svg: {styles: {default: {bottom: "0.35em", left: "0.35em"}}}
+                  },
+                  position: "inside-right"
+                },
+                commands: {
+                  stop: "stop",
+                  pause: "pause",
+                  resume: "resume",
+                  removeAllText: "remove text",
+                  submit: "submit",
+                  commandMode: "command"
+                }
+              }}
+              messageStyles={{
+                default: {
+                  shared: {
+                    bubble: {
+                      backgroundColor: "unset",
+                      marginTop: "10px",
+                      marginBottom: "10px",
+                      boxShadow: "0px 0.3px 0.9px rgba(0, 0, 0, 0.12), 0px 1.6px 3.6px rgba(0, 0, 0, 0.16)"
+                    }
+                  },
+                  user: {
+                    bubble: {
+                      background: "linear-gradient(130deg, #2870EA 20%, #1B4AEF 77.5%)"
+                    }
+                  },
+                  ai: {bubble: {background: "rgba(255,255,255,0.7)"}}
+                }
+              }}
+              errorMessages={{
+                overrides: {speechToText: "Azure Speech To Text can not be used in this website as you need to set your credentials."}
+              }}
+              submitButtonStyles={{
+                position: "outside-right",
+                submit: {
+                  container: {
+                    default: {bottom: "0.8em", borderRadius: "25px", padding: "6px 5px 4px", backgroundColor: "unset"},
+                    hover: {"backgroundColor": "#b0deff4f"},
+                    click: {"backgroundColor": "#b0deffb5"}
+                  },
+                  svg: {
+                    content: "<?xml version=\"1.0\" encoding=\"utf-8\"?> <svg viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m21.426 11.095-17-8A.999.999 0 0 0 3.03 4.242L4.969 12 3.03 19.758a.998.998 0 0 0 1.396 1.147l17-8a1 1 0 0 0 0-1.81zM5.481 18.197l.839-3.357L12 12 6.32 9.16l-.839-3.357L18.651 12l-13.17 6.197z\"/></svg>",
+                    styles: {
+                      default: {
+                        width: "1.5em",
+                        filter:
+                            "brightness(0) saturate(100%) invert(10%) sepia(86%) saturate(6044%) hue-rotate(205deg) brightness(100%) contrast(100%)"
+                      }
+                    }
+                  }
+                },
+                loading: {
+                  svg: {
+                    styles: {
+                      default: {
+                        filter:
+                            "brightness(0) saturate(100%) invert(72%) sepia(0%) saturate(3044%) hue-rotate(322deg) brightness(100%) contrast(96%)"
+                      }
+                    }
+                  }
+                },
+                stop: {
+                  container: {hover: {backgroundColor: "#ededed94"}},
+                  svg: {
+                    styles: {
+                      default: {
+                        filter: "brightness(0) saturate(100%) invert(72%) sepia(0%) saturate(3044%) hue-rotate(322deg) brightness(100%) contrast(96%)"
+                      }
+                    }
+                  }
+                }
+              }}
+              demo={true}
+              connect={{stream: true}}
           />
         </div>
       </main>

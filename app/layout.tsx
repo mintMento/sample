@@ -4,8 +4,8 @@ import type {Metadata} from 'next';
 const inter = Inter({subsets: ['latin']});
 
 export const metadata: Metadata = {
-  title: 'Deep Chat',
-  description: 'Demo Deep Chat app for NextJS App Router',
+  title: 'Unimelb Handbook Chatbot',
+  description: 'Demo Chatbot for the Unimelb Handbook'
 };
 
 export default function RootLayout({
